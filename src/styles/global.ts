@@ -46,6 +46,10 @@ const GlobalStyles = createGlobalStyle`
   }
 
   button {
+    cursor: pointer;
+  }
+
+  button {
     background: none;
     border: 0;
     padding: 0;
@@ -111,14 +115,44 @@ const GlobalStyles = createGlobalStyle`
   }
 
   #root {
+    --black: #111;
+    --white: #fff;
+    --gray-1: #f5f5f5;
+    --gray-2: #d8d8d8;
+    --gray-3: #9b9b9b;
+    --gray-4: #4a4a4a;
+    --blue-1: #daf0ff;
+    --blue-2: #007fd8;
+    --blue-3: #0060a7;
+    --green-1: #7ed321;
+    --orange-1: #ff7d00;
+    --red-1: #ba1e24;
+    --red-2:  #f74f63;
+
+    --default-color: var(--gray-4);
+    --default-color-lighten: #5c5c5c;
+    --default-color-contrast: var(--white);
+    --disabled-color: var(--gray-3);
+    --disabled-color-contrast: var(--gray-1);
+    --primary-color: var(--blue-2);
+    --primary-color-lighten: #0090f5;
+    --primary-color-contrast: var(--white);
+    --secondary-color: var(--orange-1);
+    --secondary-color-lighten: #ff9834;
+    --secondary-color-contrast: var(--white);
+    --success-color: var(--green-1);
+    --success-color-lighten: #8bde2f;
+    --success-color-contrast: var(--white);
+    --danger-color: var(--red-1);
+    --danger-color-lighten: var(--red-2);
+    --danger-color-contrast: var(--white);
+
     --bg: #18191a;
     --surface-background: #242526;
     --primary-text:#e4e6eb;
-    --primary-button-background: #2d88ff;
     --secondary-text: #b0b3b8;
-    --hover-overlay: rgba(255, 255, 255, 0.1);
-    --shadow-2: rgba(0, 0, 0, 0.2);
-    --comment-background: #3a3b3c;
+    --input-background: #3a3b3c;
+    --shadow: rgba(0, 0, 0, 0.2);
   }
 
 
