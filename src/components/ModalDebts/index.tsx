@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 
 import Modal from '../Modal';
 import Input from '../Form/Input';
+import Select from '../Form/Select';
+import Currency from '../Form/Currency';
 import Button from '../Button';
 
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -84,7 +86,7 @@ const ModalDebts: React.FC<ModalDebtsProps> = ({ isOpen, title, onClose }) => {
       await schema.validate(data, { abortEarly: false });
 
       console.log({
-        user: data.client,
+        client: data.client,
         reason: data.reason,
         value: data.value,
         date: data.date,
@@ -100,11 +102,20 @@ const ModalDebts: React.FC<ModalDebtsProps> = ({ isOpen, title, onClose }) => {
 
   return (
     <Modal isOpen={isOpen} title={title} onClose={onClose}>
-      <Form onSubmit={handleSubmit} ref={formRef}>
-        <Input name="client" label="Cliente" />
+      <Form
+        onSubmit={handleSubmit}
+        ref={formRef}
+        initialData={{
+          client: { value: 3, label: 'Clementine Bauch' },
+          reason: 'Motivo',
+          value: 20990.08,
+          date: '2020-08-11',
+        }}
+      >
+        <Select name="client" label="Cliente" options={options} isClearable />
         <Input name="reason" label="Motivo" />
-        <Input name="value" label="Valor" />
-        <Input name="date" label="Data" />
+        <Currency name="value" label="Valor" />
+        <Input name="date" label="Data" type="date" />
 
         <Buttons>
           <Button type="button" color="cancel" onClick={onClose}>

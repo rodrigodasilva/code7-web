@@ -2,13 +2,13 @@ import React, { useEffect, useCallback, useRef } from 'react';
 
 import { FullScreen, ModalContainer } from './styles';
 
-export interface IModalProps {
+export interface ModalProps {
   isOpen: boolean;
   title: string;
   onClose(): void;
 }
 
-const Modal: React.FC<IModalProps> = ({ isOpen, title, children, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, title, children, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleEscKeyUp = useCallback(

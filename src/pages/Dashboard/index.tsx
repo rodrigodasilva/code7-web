@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import Select from 'react-select';
 
 import Debt from '../../components/Debt';
 import DefaultLayout from '../_layouts/default';
@@ -124,6 +125,49 @@ const debts = [
   },
 ];
 
+const options = [
+  {
+    value: 1,
+    label: 'Leanne Graham',
+  },
+  {
+    value: 2,
+    label: 'Ervin Howell',
+  },
+  {
+    value: 3,
+    label: 'Clementine Bauch',
+  },
+  {
+    value: 4,
+    label: 'Patricia Lebsack',
+  },
+  {
+    value: 5,
+    label: 'Chelsey Dietrich',
+  },
+  {
+    value: 6,
+    label: 'Mrs. Dennis Schulist',
+  },
+  {
+    value: 7,
+    label: 'Kurtis Weissnat',
+  },
+  {
+    value: 8,
+    label: 'Nicholas Runolfsdottir V',
+  },
+  {
+    value: 9,
+    label: 'Glenna Reichert',
+  },
+  {
+    value: 10,
+    label: 'Clementina DuBuque',
+  },
+];
+
 const Dashboard: React.FC = () => {
   const handleChange = useCallback((name: string, value: string | number) => {
     console.log(name, value);
@@ -140,9 +184,10 @@ const Dashboard: React.FC = () => {
 
           <fieldset>
             <legend>Cliente</legend>
-            <input
-              placeholder="Ex: Fulano"
-              onChange={e => handleChange('name', e.target.value)}
+            <Select
+              options={options}
+              isClearable
+              classNamePrefix="react-select"
             />
           </fieldset>
 
@@ -175,19 +220,6 @@ const Dashboard: React.FC = () => {
             />
           </fieldset>
         </Filters>
-
-        {/* <Button>Adicionar</Button>
-        <Button color="secundary">Adicionar</Button>
-        <Button color="cancel">Cancelar</Button>
-        <Button color="danger">Deletar</Button>
-
-        <Button size="small">Adicionar</Button>
-        <Button color="secundary" size="default">
-          Adicionar
-        </Button>
-        <Button color="cancel" size="big">
-          Cancelar
-        </Button> */}
 
         <DebtsList>
           {debts?.map(debt => (

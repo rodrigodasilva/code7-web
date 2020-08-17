@@ -24,9 +24,6 @@ export const Container = styled.div<ContainerProps>`
     color: var(--primary-text);
     background: var(--input-background);
     outline: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-      'Helvetica Neue', sans-serif;
 
     ${props =>
       props.error &&

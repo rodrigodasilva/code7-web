@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useField } from '@unform/core';
+import { MdInfoOutline } from 'react-icons/md';
 
 import { Container, ErrorMessage } from './styles';
 
@@ -34,7 +35,12 @@ const Input: React.FC<InputProps> = ({ label, name, ...rest }) => {
         {...rest}
       />
 
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {error && (
+        <ErrorMessage>
+          <MdInfoOutline />
+          {error}
+        </ErrorMessage>
+      )}
     </Container>
   );
 };

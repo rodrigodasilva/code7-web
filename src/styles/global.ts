@@ -126,7 +126,7 @@ const GlobalStyles = createGlobalStyle`
     --blue-3: #0060a7;
     --green-1: #7ed321;
     --orange-1: #ff7d00;
-    --red-1: #ba1e24;
+    --red-1: #dc3545;
     --red-2:  #f74f63;
 
     --default-color: var(--gray-4);
@@ -154,6 +154,7 @@ const GlobalStyles = createGlobalStyle`
     --input-background: #3a3b3c;
     --shadow: rgba(0, 0, 0, 0.2);
   }
+
 
 
 `;
