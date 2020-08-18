@@ -14,7 +14,7 @@ interface InputRefInstance extends NumberFormat {
   floatValue: number;
 }
 
-const Input: React.FC<InputProps> = ({ label, name, ...rest }) => {
+const Currency: React.FC<InputProps> = ({ label, name, ...rest }) => {
   const inputRef = useRef<InputRefInstance>(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
@@ -72,4 +72,4 @@ const Input: React.FC<InputProps> = ({ label, name, ...rest }) => {
   );
 };
 
-export default Input;
+export default Currency;

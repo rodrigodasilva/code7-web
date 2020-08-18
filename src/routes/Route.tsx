@@ -5,17 +5,19 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-interface IRouterProps extends ReactDOMRouteProps {
+import { useAuth } from '../hooks/auth';
+
+interface RouterProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   component: React.ComponentType;
 }
 
-const Route: React.FC<IRouterProps> = ({
+const Route: React.FC<RouterProps> = ({
   isPrivate = false,
   component: Component,
   ...rest
 }) => {
-  const user = true; // setado para true enquanto não implemento autenticação
+  const { user } = useAuth();
 
   return (
     <ReactDOMRoute

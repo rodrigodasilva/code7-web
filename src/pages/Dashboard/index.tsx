@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Select from 'react-select';
 
 import Debt from '../../components/Debt';
 import DefaultLayout from '../_layouts/default';
 
 import { Container, Filters, DebtsList } from './styles';
+import api from '../../services/api';
 
 const debts = [
   {
@@ -169,6 +170,16 @@ const options = [
 ];
 
 const Dashboard: React.FC = () => {
+  useEffect(() => {
+    async function loadDebts(): Promise<void> {
+      const response = await api.get('/debts');
+
+      console.log(response.data);
+    }
+
+    loadDebts();
+  });
+
   const handleChange = useCallback((name: string, value: string | number) => {
     console.log(name, value);
   }, []);

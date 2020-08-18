@@ -61,10 +61,6 @@ const GlobalStyles = createGlobalStyle`
   	max-width: 100%;
   }
 
-  svg {
-    fill: currentColor;
-  }
-
   .small,
   small {
     font-size: .8em;

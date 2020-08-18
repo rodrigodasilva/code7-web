@@ -12,7 +12,7 @@ const sizes = {
     font-size: 14px;
   `,
   big: css`
-    padding: 14px 20px;
+    padding: 12px 20px;
     font-size: 15px;
   `,
 };
