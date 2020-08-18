@@ -3,6 +3,18 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 62px 44px;
+
+  @media only screen and (max-width: 900px) {
+    padding: 62px 24px;
+  }
+
+  @media only screen and (max-width: 460px) {
+    padding: 62px 12px;
+  }
 `;
 
 export const Filters = styled.div`

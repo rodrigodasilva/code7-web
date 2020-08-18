@@ -111,6 +111,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   #root {
+    background-color: var(--bg);
+    min-height: 100vh;
+
     --black: #111;
     --white: #fff;
     --gray-1: #f5f5f5;

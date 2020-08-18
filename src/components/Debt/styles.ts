@@ -13,7 +13,7 @@ export const Container = styled.section`
   min-width: 280px;
 `;
 
-export const User = styled.header`
+export const Client = styled.header`
   display: flex;
   flex-direction: column;
 

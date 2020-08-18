@@ -1,130 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Select from 'react-select';
 
 import Debt from '../../components/Debt';
-import DefaultLayout from '../_layouts/default';
+import Header from '../../components/Header';
 
 import { Container, Filters, DebtsList } from './styles';
 import api from '../../services/api';
-
-const debts = [
-  {
-    id: 1,
-    date: '20 de agosto de 2020',
-    value: 'R$ 1.000,00',
-    reason: 'Cartão de crédito asssssssssssssss ssssssssssssssssssssda a      ',
-    user: {
-      id: 1,
-      name: 'Leanne Graham',
-      username: 'Bret',
-      email: 'Sincere@april.biz',
-      address: {
-        street: 'Kulas Light',
-        suite: 'Apt. 556',
-        city: 'Gwenborough',
-        zipcode: '92998-3874',
-        geo: {
-          lat: '-37.3159',
-          lng: '81.1496',
-        },
-      },
-      phone: '1-770-736-8031 x56442',
-      website: 'hildegard.org',
-      company: {
-        name: 'Romaguera-Crona',
-        catchPhrase: 'Multi-layered client-server neural-net',
-        bs: 'harness real-time e-markets',
-      },
-    },
-  },
-  {
-    id: 2,
-    date: '20 de agosto de 2020',
-    value: 'R$ 2.500,00',
-    reason: 'Emprestino Teste',
-    user: {
-      id: 2,
-      name: 'Ervin Howell',
-      username: 'Antonette',
-      email: 'Shanna@melissa.tv',
-      address: {
-        street: 'Victor Plains',
-        suite: 'Suite 879',
-        city: 'Wisokyburgh',
-        zipcode: '90566-7771',
-        geo: {
-          lat: '-43.9509',
-          lng: '-34.4618',
-        },
-      },
-      phone: '010-692-6593 x09125',
-      website: 'anastasia.net',
-      company: {
-        name: 'Deckow-Crist',
-        catchPhrase: 'Proactive didactic contingency',
-        bs: 'synergize scalable supply-chains',
-      },
-    },
-  },
-  {
-    id: 3,
-    date: '20 de agosto de 2020',
-    value: 'R$ 2.500,00',
-    reason: 'Emprestino',
-    user: {
-      id: 3,
-      name: 'Clementine Bauch',
-      username: 'Samantha',
-      email: 'Nathan@yesenia.net',
-      address: {
-        street: 'Douglas Extension',
-        suite: 'Suite 847',
-        city: 'McKenziehaven',
-        zipcode: '59590-4157',
-        geo: {
-          lat: '-68.6102',
-          lng: '-47.0653',
-        },
-      },
-      phone: '1-463-123-4447',
-      website: 'ramiro.info',
-      company: {
-        name: 'Romaguera-Jacobson',
-        catchPhrase: 'Face to face bifurcated interface',
-        bs: 'e-enable strategic applications',
-      },
-    },
-  },
-  {
-    id: 4,
-    date: '20 de agosto de 2020',
-    value: 'R$ 2.500,00',
-    reason: 'Emprestino',
-    user: {
-      id: 3,
-      name: 'Clementine Bauch',
-      username: 'Samantha',
-      email: 'Nathan@yesenia.net',
-      address: {
-        street: 'Douglas Extension',
-        suite: 'Suite 847',
-        city: 'McKenziehaven',
-        zipcode: '59590-4157',
-        geo: {
-          lat: '-68.6102',
-          lng: '-47.0653',
-        },
-      },
-      phone: '1-463-123-4447',
-      website: 'ramiro.info',
-      company: {
-        name: 'Romaguera-Jacobson',
-        catchPhrase: 'Face to face bifurcated interface',
-        bs: 'e-enable strategic applications',
-      },
-    },
-  },
-];
 
 const options = [
   {
@@ -169,23 +50,43 @@ const options = [
   },
 ];
 
+interface Debts {
+  id: string;
+  reason: string;
+  value: number;
+  date: string;
+  client_id: number;
+  client: {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+  };
+}
+
 const Dashboard: React.FC = () => {
+  const [debts, setDebts] = useState<Debts[]>([]);
+
   useEffect(() => {
     async function loadDebts(): Promise<void> {
       const response = await api.get('/debts');
-
-      console.log(response.data);
+      setDebts(response.data);
     }
 
     loadDebts();
-  });
+  }, []);
 
   const handleChange = useCallback((name: string, value: string | number) => {
     console.log(name, value);
   }, []);
 
   return (
-    <DefaultLayout>
+    <>
+      <Header
+        openModal={() => {
+          console.log('open add modal ');
+        }}
+      />
       <Container>
         <Filters>
           <header>
@@ -232,13 +133,13 @@ const Dashboard: React.FC = () => {
           </fieldset>
         </Filters>
 
-        <DebtsList>
+        <DebtsList data-testid="debts-list">
           {debts?.map(debt => (
             <Debt key={debt.id} debt={debt} />
           ))}
         </DebtsList>
       </Container>
-    </DefaultLayout>
+    </>
   );
 };
 
