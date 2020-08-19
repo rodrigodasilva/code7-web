@@ -23,7 +23,7 @@ interface DebtProps {
 interface DebtContainerProps {
   debt: DebtProps;
   handleEdit: (debt: DebtProps) => void;
-  handleDelete?: (id: string) => {};
+  handleDelete: (debt: DebtProps) => void;
 }
 
 const DebtContainer: React.FC<DebtContainerProps> = ({
@@ -47,6 +47,10 @@ const DebtContainer: React.FC<DebtContainerProps> = ({
   const handleEditDebt = useCallback(() => {
     handleEdit(debt);
   }, [debt, handleEdit]);
+
+  const handleDeleteDebt = useCallback(() => {
+    handleDelete(debt);
+  }, [debt, handleDelete]);
 
   return (
     <>
@@ -73,7 +77,11 @@ const DebtContainer: React.FC<DebtContainerProps> = ({
         </div>
 
         <Buttons>
-          <Button color="cancel" data-testid={`cancel-debt-${debt.id}`}>
+          <Button
+            color="cancel"
+            data-testid={`cancel-debt-${debt.id}`}
+            onClick={handleDeleteDebt}
+          >
             Deletar
           </Button>
           <Button data-testid={`edit-debt-${debt.id}`} onClick={handleEditDebt}>
