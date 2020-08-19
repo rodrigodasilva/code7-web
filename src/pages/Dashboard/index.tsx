@@ -4,6 +4,7 @@ import Debt from '../../components/Debt';
 import Header from '../../components/Header';
 import ModalAddDebt from '../../components/ModalAddDebt';
 import ModalEditDebt from '../../components/ModalEditDebt';
+import ModalDeleteDebt from '../../components/ModalDeleteDebt';
 import Pagination from '../../components/Pagination';
 
 import Filters from './Filters';
@@ -44,6 +45,8 @@ const Dashboard: React.FC = () => {
   const [modalAddDebtIsOpen, setModalAddDebtIsOpen] = useState(false);
   const [modalEditDebtIsOpen, setModalEditDebtIsOpen] = useState(false);
   const [edittingDebt, setEdittingDebt] = useState<Debt>({} as Debt);
+  const [modalDeleteDebtIsOpen, setModalDeleteDebtIsOpen] = useState(false);
+  const [delettingDebt, setDelettingDebt] = useState<Debt>({} as Debt);
   const [filters, setFilters] = useState<Filters>({
     page: 1,
     per_page: 6,
@@ -118,6 +121,34 @@ const Dashboard: React.FC = () => {
     [debts],
   );
 
+  const handleLoadModalDeleteDebt = useCallback((debt: Debt): void => {
+    setModalDeleteDebtIsOpen(true);
+    setDelettingDebt(debt);
+  }, []);
+
+  const handleDeleteDebt = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        await api.delete(`/debts/${id}`);
+
+        const findIndexDeletedDebt = debts.findIndex(
+          findDebt => findDebt.id === id,
+        );
+
+        const newArrayDebts = debts;
+
+        delete newArrayDebts[findIndexDeletedDebt];
+
+        setDebts(newArrayDebts);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setModalDeleteDebtIsOpen(false);
+      }
+    },
+    [debts],
+  );
+
   const handleChangeFilter = useCallback((filter: Filter) => {
     setFilters(state => ({ ...state, page: 1, ...filter }));
   }, []);
@@ -156,6 +187,14 @@ const Dashboard: React.FC = () => {
           onSubmit={handleUpdateDebt}
         />
       )}
+      {modalDeleteDebtIsOpen && (
+        <ModalDeleteDebt
+          debt={delettingDebt}
+          isOpen={modalDeleteDebtIsOpen}
+          onClose={() => setModalDeleteDebtIsOpen(false)}
+          onSubmit={handleDeleteDebt}
+        />
+      )}
 
       <Container>
         <Filters
@@ -178,6 +217,7 @@ const Dashboard: React.FC = () => {
                   key={debt.id}
                   debt={debt}
                   handleEdit={values => handleLoadModalEditDebt(values)}
+                  handleDelete={values => handleLoadModalDeleteDebt(values)}
                 />
               ))}
 

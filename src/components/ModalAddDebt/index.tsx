@@ -119,7 +119,7 @@ const ModalAddDebt: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
         <Input name="date" label="Data" type="date" />
 
         <Buttons>
-          <Button type="button" color="cancel" onClick={onClose}>
+          <Button type="button" color="clean" onClick={onClose}>
             Cancelar
           </Button>
           <Button type="submit">Adicionar</Button>

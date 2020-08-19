@@ -35,6 +35,10 @@ const colors = {
     border: 1px solid var(--danger-color-lighten);
     color: var(--danger-color-lighten);
   `,
+  clean: css`
+    background: transparent;
+    color: var(--primary-color-contrast);
+  `,
 };
 
 export const Container = styled.button<ButtonProps>`
