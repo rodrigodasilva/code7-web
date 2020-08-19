@@ -11,6 +11,7 @@ export const Container = styled.div`
   label {
     font-size: 14px;
     margin-bottom: 4px;
+    color: var(--primary-text);
   }
 `;
 
@@ -53,6 +54,7 @@ export const Select = styled(ReactSelect)`
 
   .react-select__option {
     background: var(--input-background);
+    color: var(--primary-text);
     font-size: 16px;
     padding: 10px 15px;
 

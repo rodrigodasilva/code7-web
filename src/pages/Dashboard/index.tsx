@@ -3,6 +3,7 @@ import Select from 'react-select';
 
 import Debt from '../../components/Debt';
 import Header from '../../components/Header';
+import ModalAddDebt from '../../components/ModalAddDebt';
 
 import { Container, Filters, DebtsList } from './styles';
 import api from '../../services/api';
@@ -50,12 +51,11 @@ const options = [
   },
 ];
 
-interface Debts {
+interface Debt {
   id: string;
   reason: string;
   value: number;
   date: string;
-  client_id: number;
   client: {
     id: number;
     name: string;
@@ -65,7 +65,8 @@ interface Debts {
 }
 
 const Dashboard: React.FC = () => {
-  const [debts, setDebts] = useState<Debts[]>([]);
+  const [debts, setDebts] = useState<Debt[]>([]);
+  const [modalAddDebtIsOpen, setModalAddDebtIsOpen] = useState(false);
 
   useEffect(() => {
     async function loadDebts(): Promise<void> {
@@ -76,17 +77,38 @@ const Dashboard: React.FC = () => {
     loadDebts();
   }, []);
 
-  const handleChange = useCallback((name: string, value: string | number) => {
-    console.log(name, value);
+  const handleAddDebt = useCallback(async (debt: Omit<Debt, 'id'>): Promise<
+    void
+  > => {
+    try {
+      const response = await api.post('/debts', debt);
+
+      setDebts(state => [response.data, ...state]);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setModalAddDebtIsOpen(false);
+    }
   }, []);
+
+  const handleChangeFilter = useCallback(
+    (name: string, value: string | number) => {
+      console.log(name, value);
+    },
+    [],
+  );
 
   return (
     <>
-      <Header
-        openModal={() => {
-          console.log('open add modal ');
-        }}
-      />
+      <Header openModal={() => setModalAddDebtIsOpen(true)} />
+      {modalAddDebtIsOpen && (
+        <ModalAddDebt
+          isOpen={modalAddDebtIsOpen}
+          onClose={() => setModalAddDebtIsOpen(false)}
+          onSubmit={handleAddDebt}
+        />
+      )}
+
       <Container>
         <Filters>
           <header>
@@ -107,11 +129,11 @@ const Dashboard: React.FC = () => {
             <legend>Valor</legend>
             <input
               placeholder="Valor mínimo"
-              onChange={e => handleChange('value_min', e.target.value)}
+              onChange={e => handleChangeFilter('value_min', e.target.value)}
             />
             <input
               placeholder="Valor máximo"
-              onChange={e => handleChange('value_max', e.target.value)}
+              onChange={e => handleChangeFilter('value_max', e.target.value)}
             />
           </fieldset>
 
@@ -120,7 +142,7 @@ const Dashboard: React.FC = () => {
             <input
               type="date"
               placeholder="Ex: 25/10/2020"
-              onChange={e => handleChange('date', e.target.value)}
+              onChange={e => handleChangeFilter('date', e.target.value)}
             />
           </fieldset>
 
@@ -128,7 +150,7 @@ const Dashboard: React.FC = () => {
             <legend>Motivo</legend>
             <input
               placeholder="Ex: divida cartão de crédito"
-              onChange={e => handleChange('reason', e.target.value)}
+              onChange={e => handleChangeFilter('reason', e.target.value)}
             />
           </fieldset>
         </Filters>

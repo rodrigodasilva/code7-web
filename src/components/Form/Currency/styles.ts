@@ -13,6 +13,7 @@ export const Container = styled.div<ContainerProps>`
   label {
     font-size: 14px;
     margin-bottom: 4px;
+    color: var(--primary-text);
   }
 
   input {

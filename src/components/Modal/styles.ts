@@ -60,6 +60,7 @@ export const ModalContainer = styled.div`
     h3 {
       font-size: 22px;
       font-weight: bold;
+      color: var(--primary-text);
     }
   }
 `;
