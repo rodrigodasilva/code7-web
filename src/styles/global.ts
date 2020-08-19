@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import 'react-activity/dist/react-activity.css';
 
 const GlobalStyles = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/

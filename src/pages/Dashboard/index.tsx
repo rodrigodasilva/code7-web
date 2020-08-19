@@ -1,55 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Select from 'react-select';
 
 import Debt from '../../components/Debt';
 import Header from '../../components/Header';
 import ModalAddDebt from '../../components/ModalAddDebt';
+import ModalEditDebt from '../../components/ModalEditDebt';
+import Pagination from '../../components/Pagination';
 
-import { Container, Filters, DebtsList } from './styles';
+import Filters from './Filters';
+
 import api from '../../services/api';
 
-const options = [
-  {
-    value: 1,
-    label: 'Leanne Graham',
-  },
-  {
-    value: 2,
-    label: 'Ervin Howell',
-  },
-  {
-    value: 3,
-    label: 'Clementine Bauch',
-  },
-  {
-    value: 4,
-    label: 'Patricia Lebsack',
-  },
-  {
-    value: 5,
-    label: 'Chelsey Dietrich',
-  },
-  {
-    value: 6,
-    label: 'Mrs. Dennis Schulist',
-  },
-  {
-    value: 7,
-    label: 'Kurtis Weissnat',
-  },
-  {
-    value: 8,
-    label: 'Nicholas Runolfsdottir V',
-  },
-  {
-    value: 9,
-    label: 'Glenna Reichert',
-  },
-  {
-    value: 10,
-    label: 'Clementina DuBuque',
-  },
-];
+import { Container, DebtsList, Message } from './styles';
 
 interface Debt {
   id: string;
@@ -64,18 +25,56 @@ interface Debt {
   };
 }
 
+interface Filters {
+  page: number;
+  per_page?: number;
+  client_id?: number | null;
+  value_min?: number | null;
+  value_max?: number | null;
+  date?: string;
+  reason?: string;
+}
+
+interface Filter {
+  [key: string]: string | number;
+}
+
 const Dashboard: React.FC = () => {
   const [debts, setDebts] = useState<Debt[]>([]);
   const [modalAddDebtIsOpen, setModalAddDebtIsOpen] = useState(false);
+  const [modalEditDebtIsOpen, setModalEditDebtIsOpen] = useState(false);
+  const [edittingDebt, setEdittingDebt] = useState<Debt>({} as Debt);
+  const [filters, setFilters] = useState<Filters>({
+    page: 1,
+    per_page: 6,
+    client_id: null,
+    value_min: null,
+    value_max: null,
+    date: '',
+    reason: '',
+  });
+  const [totalPages, setTotalPages] = useState(0);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadDebts(): Promise<void> {
-      const response = await api.get('/debts');
-      setDebts(response.data);
+      try {
+        setLoading(true);
+        const response = await api.get('/debts', { params: { ...filters } });
+        setDebts(response.data);
+
+        const { headers } = response;
+        setTotalPages(Number(headers['x-total-page']));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     loadDebts();
-  }, []);
+  }, [filters]);
 
   const handleAddDebt = useCallback(async (debt: Omit<Debt, 'id'>): Promise<
     void
@@ -91,12 +90,53 @@ const Dashboard: React.FC = () => {
     }
   }, []);
 
-  const handleChangeFilter = useCallback(
-    (name: string, value: string | number) => {
-      console.log(name, value);
+  const handleLoadModalEditDebt = useCallback((debt: Debt): void => {
+    setModalEditDebtIsOpen(true);
+    setEdittingDebt(debt);
+  }, []);
+
+  const handleUpdateDebt = useCallback(
+    async (debt: Debt): Promise<void> => {
+      try {
+        const response = await api.put('/debts', debt);
+
+        const findIndexUpdatedDebt = debts.findIndex(
+          findDebt => findDebt.id === debt.id,
+        );
+
+        const newArrayDebts = debts;
+
+        newArrayDebts[findIndexUpdatedDebt] = response.data;
+
+        setDebts(newArrayDebts);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setModalEditDebtIsOpen(false);
+      }
     },
-    [],
+    [debts],
   );
+
+  const handleChangeFilter = useCallback((filter: Filter) => {
+    setFilters(state => ({ ...state, page: 1, ...filter }));
+  }, []);
+
+  const handleChangePage = useCallback((page: number) => {
+    setFilters(state => ({ ...state, page }));
+  }, []);
+
+  const handleResetFilters = useCallback(() => {
+    setFilters({
+      page: 1,
+      per_page: 6,
+      client_id: null,
+      value_min: null,
+      value_max: null,
+      date: '',
+      reason: '',
+    });
+  }, []);
 
   return (
     <>
@@ -108,57 +148,48 @@ const Dashboard: React.FC = () => {
           onSubmit={handleAddDebt}
         />
       )}
+      {modalEditDebtIsOpen && (
+        <ModalEditDebt
+          debt={edittingDebt}
+          isOpen={modalEditDebtIsOpen}
+          onClose={() => setModalEditDebtIsOpen(false)}
+          onSubmit={handleUpdateDebt}
+        />
+      )}
 
       <Container>
-        <Filters>
-          <header>
-            <h5>Filtrar por:</h5>
-            {/* {isLoading && <Spinner size={12} color="#fff" />} */}
-          </header>
+        <Filters
+          onChange={filter => handleChangeFilter(filter)}
+          onReset={() => handleResetFilters()}
+          isLoading={loading && !!debts.length}
+        />
 
-          <fieldset>
-            <legend>Cliente</legend>
-            <Select
-              options={options}
-              isClearable
-              classNamePrefix="react-select"
-            />
-          </fieldset>
+        <DebtsList>
+          {!loading && !debts.length && (
+            <Message>Nenhum registro encontrado</Message>
+          )}
 
-          <fieldset>
-            <legend>Valor</legend>
-            <input
-              placeholder="Valor mínimo"
-              onChange={e => handleChangeFilter('value_min', e.target.value)}
-            />
-            <input
-              placeholder="Valor máximo"
-              onChange={e => handleChangeFilter('value_max', e.target.value)}
-            />
-          </fieldset>
+          {loading && !debts.length ? (
+            <Message>Carregando...</Message>
+          ) : (
+            <>
+              {debts?.map(debt => (
+                <Debt
+                  key={debt.id}
+                  debt={debt}
+                  handleEdit={values => handleLoadModalEditDebt(values)}
+                />
+              ))}
 
-          <fieldset>
-            <legend>Data</legend>
-            <input
-              type="date"
-              placeholder="Ex: 25/10/2020"
-              onChange={e => handleChangeFilter('date', e.target.value)}
-            />
-          </fieldset>
-
-          <fieldset>
-            <legend>Motivo</legend>
-            <input
-              placeholder="Ex: divida cartão de crédito"
-              onChange={e => handleChangeFilter('reason', e.target.value)}
-            />
-          </fieldset>
-        </Filters>
-
-        <DebtsList data-testid="debts-list">
-          {debts?.map(debt => (
-            <Debt key={debt.id} debt={debt} />
-          ))}
+              {!!debts.length && (
+                <Pagination
+                  currentPage={filters.page}
+                  totalPage={totalPages}
+                  onChange={(page: number) => handleChangePage(page)}
+                />
+              )}
+            </>
+          )}
         </DebtsList>
       </Container>
     </>

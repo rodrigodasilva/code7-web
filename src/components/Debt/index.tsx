@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { MdEmail, MdPhone } from 'react-icons/md';
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -8,12 +8,12 @@ import Button from '../Button';
 import { Container, Client, Debt, Buttons } from './styles';
 
 interface DebtProps {
-  id: string | number;
+  id: string;
   date: string;
   value: number;
   reason: string;
   client: {
-    id: string | number;
+    id: number;
     name: string;
     email: string;
     phone: string;
@@ -22,9 +22,15 @@ interface DebtProps {
 
 interface DebtContainerProps {
   debt: DebtProps;
+  handleEdit: (debt: DebtProps) => void;
+  handleDelete?: (id: string) => {};
 }
 
-const DebtContainer: React.FC<DebtContainerProps> = ({ debt }) => {
+const DebtContainer: React.FC<DebtContainerProps> = ({
+  debt,
+  handleEdit,
+  handleDelete,
+}) => {
   const formatValue = useMemo(() => {
     return new Intl.NumberFormat('pt-br', {
       style: 'currency',
@@ -37,6 +43,10 @@ const DebtContainer: React.FC<DebtContainerProps> = ({ debt }) => {
       locale: ptBR,
     });
   }, [debt.date]);
+
+  const handleEditDebt = useCallback(() => {
+    handleEdit(debt);
+  }, [debt, handleEdit]);
 
   return (
     <>
@@ -66,7 +76,9 @@ const DebtContainer: React.FC<DebtContainerProps> = ({ debt }) => {
           <Button color="cancel" data-testid={`cancel-debt-${debt.id}`}>
             Deletar
           </Button>
-          <Button data-testid={`edit-debt-${debt.id}`}>Editar</Button>
+          <Button data-testid={`edit-debt-${debt.id}`} onClick={handleEditDebt}>
+            Editar
+          </Button>
         </Buttons>
       </Container>
     </>

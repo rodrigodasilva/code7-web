@@ -10,7 +10,7 @@ export const Container = styled.section`
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  min-width: 280px;
+  min-width: 260px;
 `;
 
 export const Client = styled.header`
