@@ -4,7 +4,6 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
-import { toast } from 'react-toastify';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button';
@@ -22,7 +21,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useAuth();
+  const { signIn, loading } = useAuth();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -47,13 +46,7 @@ const SignIn: React.FC = () => {
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
-
-          return;
         }
-
-        toast.error(
-          err?.response?.data?.message || 'Erro de comunicação com o servidor',
-        );
       }
     },
     [signIn],
@@ -68,7 +61,7 @@ const SignIn: React.FC = () => {
           <Input name="email" label="E-mail" />
           <Input name="password" type="password" label="Senha" />
 
-          <Button size="big" type="submit">
+          <Button type="submit" isLoading={loading}>
             Entrar
           </Button>
         </Form>

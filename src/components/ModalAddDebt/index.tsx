@@ -42,9 +42,15 @@ interface ModalProps {
   isOpen: boolean;
   onClose(): void;
   onSubmit: (debt: CreateDebt) => void;
+  isLoading: boolean;
 }
 
-const ModalAddDebt: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const ModalAddDebt: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  isLoading,
+}) => {
   const [clients, setClients] = useState<Client[]>([]);
 
   const formRef = useRef<FormHandles>(null);
@@ -122,7 +128,9 @@ const ModalAddDebt: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
           <Button type="button" color="clean" onClick={onClose}>
             Cancelar
           </Button>
-          <Button type="submit">Adicionar</Button>
+          <Button type="submit" isLoading={isLoading}>
+            Adicionar
+          </Button>
         </Buttons>
       </Form>
     </Modal>

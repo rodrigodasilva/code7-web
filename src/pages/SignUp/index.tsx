@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
@@ -21,6 +21,8 @@ interface SignUpFormData {
 }
 
 const SignUp: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
   const formRef = useRef<FormHandles>(null);
 
   const history = useHistory();
@@ -28,6 +30,8 @@ const SignUp: React.FC = () => {
   const handleSubmit = useCallback(
     async (data: SignUpFormData) => {
       try {
+        setLoading(true);
+
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
@@ -43,8 +47,11 @@ const SignUp: React.FC = () => {
         await api.post('/users', data);
 
         toast.success('Cadastro realizado com sucesso!');
+        setLoading(false);
         history.push('/');
       } catch (err) {
+        setLoading(false);
+
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
 
@@ -71,7 +78,7 @@ const SignUp: React.FC = () => {
           <Input name="email" label="E-mail" />
           <Input name="password" type="password" label="Senha" />
 
-          <Button size="big" type="submit">
+          <Button type="submit" isLoading={loading}>
             Cadastrar
           </Button>
         </Form>
