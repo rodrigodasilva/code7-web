@@ -22,10 +22,6 @@ const colors = {
     background: var(--primary-color);
     color: var(--primary-color-contrast);
   `,
-  secundary: css`
-    background: var(--secondary-color);
-    color: var(--secondary-color-contrast);
-  `,
   danger: css`
     background: var(--danger-color);
     color: var(--danger-color-contrast);

@@ -18,10 +18,6 @@ export const Container = styled.nav`
     border-bottom: 2px solid transparent;
     transition: border-color 0.25s ease 0s;
 
-    & + span {
-      left: 0;
-    }
-
     &:hover {
       border-color: var(--primary-color-lighten);
     }

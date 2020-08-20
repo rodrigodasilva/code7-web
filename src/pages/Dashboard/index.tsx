@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import Debt from '../../components/Debt';
 import Header from '../../components/Header';
@@ -68,9 +69,10 @@ const Dashboard: React.FC = () => {
         setDebts(response.data);
 
         const { headers } = response;
+
         setTotalPages(Number(headers['x-total-page']));
       } catch (err) {
-        console.log(err);
+        toast.error('Erro no carregamento dos dados.');
       } finally {
         setLoading(false);
       }
@@ -87,7 +89,7 @@ const Dashboard: React.FC = () => {
 
       setDebts(state => [response.data, ...state]);
     } catch (err) {
-      console.log(err);
+      toast.error('Erro ao adicionar dívida');
     } finally {
       setModalAddDebtIsOpen(false);
     }
@@ -113,7 +115,7 @@ const Dashboard: React.FC = () => {
 
         setDebts(newArrayDebts);
       } catch (err) {
-        console.log(err);
+        toast.error('Erro ao atualizar.');
       } finally {
         setModalEditDebtIsOpen(false);
       }
@@ -141,7 +143,7 @@ const Dashboard: React.FC = () => {
 
         setDebts(newArrayDebts);
       } catch (err) {
-        console.log(err);
+        toast.error('Erro ao deletar.');
       } finally {
         setModalDeleteDebtIsOpen(false);
       }
