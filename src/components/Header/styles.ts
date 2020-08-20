@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.header`
+export const Container = styled.nav`
   display: flex;
   align-items: center;
 
@@ -41,16 +41,46 @@ export const Logo = styled.span`
   cursor: pointer;
 `;
 
-export const ButtonGoBack = styled.button`
-  padding: 2px 12px;
-  outline: none;
-  color: var(--primary-text);
+export const Content = styled.aside`
   display: flex;
   align-items: center;
-  font-size: 14px;
-  font-weight: bold;
 
-  svg {
-    margin-right: 8px;
+  > button {
+    color: var(--secondary-text);
+    outline: none;
+    font-weight: bold;
+
+    font-size: 14px;
+
+    padding-bottom: 0.1rem;
+    will-change: border-color;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.25s ease 0s;
+
+    &:hover {
+      border-color: var(--secondary-text);
+    }
+  }
+`;
+
+export const User = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 32px;
+
+  strong {
+    font-size: 14px;
+    color: var(--primary-text);
+  }
+
+  button {
+    color: var(--secondary-text);
+    font-size: 13px;
+    outline: none;
+
+    :hover {
+      opacity: 0.8;
+    }
   }
 `;

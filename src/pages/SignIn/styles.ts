@@ -25,7 +25,7 @@ export const Content = styled.div`
     align-items: center;
     justify-content: center;
     background: var(--surface-background);
-    padding: 36px 24px;
+    padding: 48px 36px;
     border-radius: 10px;
     box-shadow: 0 1px 2px var(--shadow);
 
