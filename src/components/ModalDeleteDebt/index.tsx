@@ -28,6 +28,7 @@ interface ModalProps {
   debt: Debt;
   onClose(): void;
   onSubmit: (id: string) => void;
+  isLoading: boolean;
 }
 
 const ModalDeleteDebt: React.FC<ModalProps> = ({
@@ -35,6 +36,7 @@ const ModalDeleteDebt: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  isLoading,
 }) => {
   const formatValue = useMemo(() => {
     return new Intl.NumberFormat('pt-br', {
@@ -66,6 +68,7 @@ const ModalDeleteDebt: React.FC<ModalProps> = ({
             type="button"
             color="danger"
             onClick={() => onSubmit(debt.id)}
+            isLoading={isLoading}
           >
             Deletar
           </Button>

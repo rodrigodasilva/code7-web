@@ -58,8 +58,8 @@ const Dashboard: React.FC = () => {
     reason: '',
   });
   const [totalPages, setTotalPages] = useState(0);
-
   const [loading, setLoading] = useState(true);
+  const [loadingSubmitModal, setLoadingSubmitModal] = useState(false);
 
   useEffect(() => {
     async function loadDebts(): Promise<void> {
@@ -101,9 +101,11 @@ const Dashboard: React.FC = () => {
     void
   > => {
     try {
+      setLoadingSubmitModal(true);
       const response = await api.post('/debts', debt);
 
       setDebts(state => [response.data, ...state]);
+      setLoadingSubmitModal(false);
     } catch (err) {
       toast.error('Erro ao adicionar dívida');
     } finally {
@@ -119,6 +121,8 @@ const Dashboard: React.FC = () => {
   const handleUpdateDebt = useCallback(
     async (debt: Debt): Promise<void> => {
       try {
+        setLoadingSubmitModal(true);
+
         const response = await api.put('/debts', debt);
 
         const findIndexUpdatedDebt = debts.findIndex(
@@ -130,10 +134,11 @@ const Dashboard: React.FC = () => {
         newArrayDebts[findIndexUpdatedDebt] = response.data;
 
         setDebts(newArrayDebts);
+        setModalEditDebtIsOpen(false);
       } catch (err) {
         toast.error('Erro ao atualizar.');
       } finally {
-        setModalEditDebtIsOpen(false);
+        setLoadingSubmitModal(false);
       }
     },
     [debts],
@@ -147,6 +152,8 @@ const Dashboard: React.FC = () => {
   const handleDeleteDebt = useCallback(
     async (id: string): Promise<void> => {
       try {
+        setLoadingSubmitModal(true);
+
         await api.delete(`/debts/${id}`);
 
         const findIndexDeletedDebt = debts.findIndex(
@@ -158,10 +165,11 @@ const Dashboard: React.FC = () => {
         delete newArrayDebts[findIndexDeletedDebt];
 
         setDebts(newArrayDebts);
+        setModalDeleteDebtIsOpen(false);
       } catch (err) {
         toast.error('Erro ao deletar.');
       } finally {
-        setModalDeleteDebtIsOpen(false);
+        setLoadingSubmitModal(false);
       }
     },
     [debts],
@@ -195,6 +203,7 @@ const Dashboard: React.FC = () => {
           isOpen={modalAddDebtIsOpen}
           onClose={() => setModalAddDebtIsOpen(false)}
           onSubmit={handleAddDebt}
+          isLoading={loadingSubmitModal}
         />
       )}
       {modalEditDebtIsOpen && (
@@ -203,6 +212,7 @@ const Dashboard: React.FC = () => {
           isOpen={modalEditDebtIsOpen}
           onClose={() => setModalEditDebtIsOpen(false)}
           onSubmit={handleUpdateDebt}
+          isLoading={loadingSubmitModal}
         />
       )}
       {modalDeleteDebtIsOpen && (
@@ -211,6 +221,7 @@ const Dashboard: React.FC = () => {
           isOpen={modalDeleteDebtIsOpen}
           onClose={() => setModalDeleteDebtIsOpen(false)}
           onSubmit={handleDeleteDebt}
+          isLoading={loadingSubmitModal}
         />
       )}
 

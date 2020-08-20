@@ -51,6 +51,7 @@ interface ModalProps {
   debt: Debt;
   onClose(): void;
   onSubmit: (debt: UpdateDebt) => void;
+  isLoading: boolean;
 }
 
 const ModalEditDebt: React.FC<ModalProps> = ({
@@ -58,6 +59,7 @@ const ModalEditDebt: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
+  isLoading,
 }) => {
   const [clients, setClients] = useState<Client[]>([]);
 
@@ -146,7 +148,9 @@ const ModalEditDebt: React.FC<ModalProps> = ({
           <Button type="button" color="clean" onClick={onClose}>
             Cancelar
           </Button>
-          <Button type="submit">Atualizar</Button>
+          <Button type="submit" isLoading={isLoading}>
+            Atualizar
+          </Button>
         </Buttons>
       </Form>
     </Modal>

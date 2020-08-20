@@ -7,7 +7,7 @@ interface Props {
 export const Spinner = styled.span<Props>`
   display: inline-block;
   border: 3px solid var(--primary-color-contrast);
-  border-left-color: var(--primary-color-lighten);
+  border-left-color: transparent;
   border-radius: 50%;
   width: ${props => props.size || 30}px;
   height: ${props => props.size || 30}px;

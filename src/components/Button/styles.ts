@@ -4,15 +4,15 @@ import { ButtonProps } from './index';
 
 const sizes = {
   small: css`
-    padding: 4px 8px;
+    padding: 6px 8px;
     font-size: 12px;
   `,
   default: css`
-    padding: 8px 12px;
+    padding: 10px 12px;
     font-size: 14px;
   `,
   big: css`
-    padding: 12px 20px;
+    padding: 14px 20px;
     font-size: 15px;
   `,
 };
@@ -44,20 +44,39 @@ export const Container = styled.button<ButtonProps>`
   color: #fff;
   outline: none;
   cursor: pointer;
+  position: relative;
 
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s;
 
-  &[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
   &:hover {
     opacity: 0.9;
   }
 
+  &[disabled] {
+    opacity: 0.8;
+    cursor: not-allowed;
+  }
+
   ${props => (props.size ? sizes[props.size] : sizes.default)}
   ${props => (props.color ? colors[props.color] : colors.primary)}
+
+  ${props =>
+    props.isLoading &&
+    css`
+      color: transparent;
+    `}
+`;
+
+export const ContainerLoading = styled.div`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+import { toast } from 'react-toastify';
+
 import api from '../services/api';
 
 interface User {
@@ -20,6 +22,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: User;
+  loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   updateUser(user: User): void;
@@ -51,17 +54,29 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
+  const [loading, setLoading] = useState(false);
+
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', { email, password });
+    try {
+      setLoading(true);
 
-    const { token, user } = response.data;
+      const response = await api.post('sessions', { email, password });
 
-    localStorage.setItem('@Code7:token', token);
-    localStorage.setItem('@Code7:user', JSON.stringify(user));
+      const { token, user } = response.data;
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
+      localStorage.setItem('@Code7:token', token);
+      localStorage.setItem('@Code7:user', JSON.stringify(user));
 
-    setData({ token, user });
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
+      setData({ token, user });
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || 'Erro de comunicação com o servidor',
+      );
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const signOut = useCallback(() => {
@@ -85,7 +100,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: data.user, signIn, signOut, updateUser }}
+      value={{ user: data.user, signIn, signOut, updateUser, loading }}
     >
       {children}
     </AuthContext.Provider>
