@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'small' | 'default' | 'big';
-  color?: 'primary' | 'secundary' | 'cancel' | 'danger' | 'clean';
+  color?: 'primary' | 'cancel' | 'danger' | 'clean';
   loading?: boolean;
 };
 

@@ -123,7 +123,6 @@ const GlobalStyles = createGlobalStyle`
     --blue-2: #007fd8;
     --blue-3: #0060a7;
     --green-1: #7ed321;
-    --orange-1: #ff7d00;
     --red-1: #dc3545;
     --red-2:  #f74f63;
 
@@ -135,8 +134,6 @@ const GlobalStyles = createGlobalStyle`
     --primary-color: var(--blue-2);
     --primary-color-lighten: #0090f5;
     --primary-color-contrast: var(--white);
-    --secondary-color: var(--orange-1);
-    --secondary-color-lighten: #ff9834;
     --secondary-color-contrast: var(--white);
     --success-color: var(--green-1);
     --success-color-lighten: #8bde2f;
@@ -147,7 +144,7 @@ const GlobalStyles = createGlobalStyle`
 
     --bg: #18191a;
     --surface-background: #242526;
-    --primary-text:#e4e6eb;
+    --primary-text: #e4e6eb;
     --secondary-text: #b0b3b8;
     --input-background: #3a3b3c;
     --shadow: rgba(0, 0, 0, 0.2);

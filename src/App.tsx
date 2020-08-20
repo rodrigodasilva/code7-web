@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import CustomContainerToast from './components/ContainerToast';
+
 import Routes from './routes';
 import GlobalStyle from './styles/global';
 
@@ -12,6 +14,7 @@ const App: React.FC = () => (
       <Routes />
     </AppProvider>
     <GlobalStyle />
+    <CustomContainerToast />
   </Router>
 );
 
