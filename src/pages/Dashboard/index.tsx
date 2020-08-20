@@ -60,6 +60,7 @@ const Dashboard: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingSubmitModal, setLoadingSubmitModal] = useState(false);
+  const [forceFetchReload, setForceFecthReload] = useState(false);
 
   useEffect(() => {
     async function loadDebts(): Promise<void> {
@@ -79,7 +80,7 @@ const Dashboard: React.FC = () => {
     }
 
     loadDebts();
-  }, [filters]);
+  }, [filters, forceFetchReload]);
 
   useEffect(
     () => () => {
@@ -166,6 +167,7 @@ const Dashboard: React.FC = () => {
 
         setDebts(newArrayDebts);
         setModalDeleteDebtIsOpen(false);
+        setForceFecthReload(state => !state);
       } catch (err) {
         toast.error('Erro ao deletar.');
       } finally {
@@ -250,7 +252,7 @@ const Dashboard: React.FC = () => {
                 />
               ))}
 
-              {!!debts.length && (
+              {totalPages > 1 && (
                 <Pagination
                   currentPage={filters.page}
                   totalPage={totalPages}
