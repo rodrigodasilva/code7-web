@@ -97,7 +97,7 @@ const Filters: React.FC<FilterProps> = ({ onChange, onReset, isLoading }) => {
   const clientSelected = useMemo(() => {
     return filterValues.client_id
       ? clientOptions.find(option => option.value === filterValues.client_id)
-      : { value: '', label: '' };
+      : null;
   }, [clientOptions, filterValues.client_id]);
 
   const handleResetFilters = useCallback(() => {
@@ -142,7 +142,6 @@ const Filters: React.FC<FilterProps> = ({ onChange, onReset, isLoading }) => {
         <legend>Cliente</legend>
         <Select
           options={clientOptions}
-          placeholder="Selecione"
           classNamePrefix="react-select"
           onChange={option => {
             option
@@ -150,6 +149,7 @@ const Filters: React.FC<FilterProps> = ({ onChange, onReset, isLoading }) => {
               : handleChangeSelect({ value: '', label: '' });
           }}
           value={clientSelected}
+          placeholder="Selecione"
         />
       </fieldset>
 
