@@ -2,34 +2,36 @@ import React, { useCallback, useRef } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
-import { FiLogIn } from 'react-icons/fi';
+import { Link, useHistory } from 'react-router-dom';
+import { FiArrowLeft } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Button';
 
-import { useAuth } from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content } from './styles';
+import api from '../../services/api';
 
-interface SignInFormData {
+interface SignUpFormData {
+  name: string;
   email: string;
   password: string;
 }
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { signIn } = useAuth();
+  const history = useHistory();
 
   const handleSubmit = useCallback(
-    async (data: SignInFormData) => {
+    async (data: SignUpFormData) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
           email: Yup.string()
             .required('E-mail obrigratório')
             .email('Digite um e-mail válido'),
@@ -38,10 +40,10 @@ const SignIn: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        await signIn({
-          email: data.email,
-          password: data.password,
-        });
+        await api.post('/users', data);
+
+        toast.success('Cadastro realizado com sucesso!');
+        history.push('/');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -56,30 +58,31 @@ const SignIn: React.FC = () => {
         );
       }
     },
-    [signIn],
+    [history],
   );
 
   return (
     <Container>
       <Content>
-        <h1>Faça seu login</h1>
+        <h1>Faça seu cadastro</h1>
 
         <Form onSubmit={handleSubmit} ref={formRef}>
+          <Input name="name" label="Nome" />
           <Input name="email" label="E-mail" />
           <Input name="password" type="password" label="Senha" />
 
           <Button size="big" type="submit">
-            Entrar
+            Cadastrar
           </Button>
         </Form>
 
-        <Link to="/register">
-          <FiLogIn />
-          Criar conta
+        <Link to="/">
+          <FiArrowLeft />
+          Voltar para login
         </Link>
       </Content>
     </Container>
   );
 };
 
-export default SignIn;
+export default SignUp;

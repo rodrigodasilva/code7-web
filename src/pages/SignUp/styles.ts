@@ -9,10 +9,10 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
-const appearFromLeft = keyframes`
+const appearFromRight = keyframes`
   from {
     opacity: 0;
-    transform: translateX(-50px);
+    transform: translateX(50px);
   }
 
   to {
@@ -20,7 +20,6 @@ const appearFromLeft = keyframes`
     transform: translateX(0);
   }
 `;
-
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,7 +33,7 @@ export const Content = styled.div`
   width: 100%;
   max-width: 380px;
 
-  animation: ${appearFromLeft} 1s;
+  animation: ${appearFromRight} 1s;
 
   h1 {
     color: var(--primary-text);
@@ -58,7 +57,7 @@ export const Content = styled.div`
   }
 
   a {
-    color: var(--primary-color-lighten);
+    color: var(--primary-text);
     font-size: 16px;
     margin-top: 40px;
     display: flex;

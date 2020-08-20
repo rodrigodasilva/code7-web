@@ -13,7 +13,7 @@ export const Container = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  height: 52px;
+  height: 58px;
 `;
 
 export const MaxWidth = styled.div`
@@ -43,7 +43,7 @@ export const Logo = styled.span`
 
 export const Content = styled.aside`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 
   > button {
     color: var(--secondary-text);
@@ -52,7 +52,6 @@ export const Content = styled.aside`
 
     font-size: 14px;
 
-    padding-bottom: 0.1rem;
     will-change: border-color;
     border-bottom: 2px solid transparent;
     transition: border-color 0.25s ease 0s;
@@ -70,13 +69,13 @@ export const User = styled.div`
   margin-left: 32px;
 
   strong {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--primary-text);
   }
 
   button {
     color: var(--secondary-text);
-    font-size: 13px;
+    font-size: 14px;
     outline: none;
 
     :hover {
